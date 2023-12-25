@@ -20,7 +20,7 @@ def main():
 	huffman_encoded_text = text_to_codes(txt_file, codes_dict)
 	encoded_file = encode(txt_file, codes_dict)
 	
-	with open(encoded_file) as e_file:
+	with open(encoded_file, 'rb') as e_file:
 		encoded_string = e_file.read()
 	
 	encoded_giant_text = code_to_text(encoded_string, codes_dict)
@@ -43,24 +43,26 @@ def text_to_codes(txt_file, codes_dict):
 def encode(txt_file, codes_dict):
 	output_file = f"encoded_{txt_file}"
 	with open(txt_file) as file:
-		with open(output_file, 'w') as outfile:
+		with open(output_file, 'wb') as outfile:
 			for line in file:
 				encoded_line = ''.join(codes_dict[char] for char in line)
-				outfile.write(encoded_line)
+				binary_encoded_line = int(encoded_line, 2).to_bytes((len(encoded_line) + 7) // 8, byteorder='big')
+				outfile.write(binary_encoded_line)
 	return output_file
 
 #def decode( huffman_encoded_text_file, char_to_code_dict ):
 
 def code_to_text( huffman_encoded_text, char_to_code_dict):
 	# gonna try with a sliding window approach
+	binary_string = ''.join(format(byte, '08b') for byte in huffman_encoded_text)
 	code_to_char_dict = {code: char for char, code in char_to_code_dict.items()}
 	result = ""
 	window_start = 0
 	window_end = 1
 
-	while window_end < len(huffman_encoded_text):
-		if huffman_encoded_text[window_start:window_end+1] in code_to_char_dict:
-			result += code_to_char_dict[huffman_encoded_text[window_start:window_end+1]]
+	while window_end < len(binary_string):
+		if binary_string[window_start:window_end+1] in code_to_char_dict:
+			result += code_to_char_dict[binary_string[window_start:window_end+1]]
 			window_start = window_end + 1
 			window_end = window_start + 1
 			continue
