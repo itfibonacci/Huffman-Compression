@@ -3,11 +3,14 @@ from priority_queue import priority_queue
 from huffman_tree import HuffmanTree
 
 from heapq import heappop
+from argparse import ArgumentParser
+
 
 def main():
-
-	txt_file = "135-0.txt"
-	#txt_file = "./small_sample.txt"
+	parser = ArgumentParser()
+	parser.add_argument("txt_file", help="The text file to be encoded")
+	args = parser.parse_args()
+	txt_file = args.txt_file
 
 	frequencies = frequency_counter(txt_file)
 
