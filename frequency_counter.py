@@ -5,7 +5,6 @@
 import time
 
 def frequency_counter(filename):
-	start = time.time()
 	frequencies = {}
 	with open(filename) as file:
 		for line in file:
@@ -15,13 +14,4 @@ def frequency_counter(filename):
 				else:
 					frequencies[char] = 1
 	end = time.time()
-	print(f'Elapsed time is: {end - start}')
 	return frequencies
-
-def time_it(filename):
-	start = time.time()
-	end = time.time()
-	print(f'Elapsed time is: {end - start}')
-
-def sort_dictionary(dictionary):
-	return dict(sorted(dictionary.items(), key=lambda item: item[1]))

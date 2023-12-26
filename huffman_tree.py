@@ -84,7 +84,7 @@ class HuffmanTree():
 
 		self.generate_codes(node.left_child, current_code + "0", codes)
 		self.generate_codes(node.right_child, current_code + "1", codes)
-
+		
 		return codes
 
 	def build_codes_dict(self):
